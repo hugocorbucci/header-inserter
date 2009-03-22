@@ -2,6 +2,7 @@ require File.dirname(__FILE__) + '/spec_helper.rb'
 require 'ftools'
 require 'fileutils'
 require 'lib/header-inserter/project'
+require 'lib/header-inserter/project-file'
 
 describe Project do
   
@@ -24,15 +25,19 @@ describe Project do
     file.close
   end
   
+  def to_project_file project, array
+    array.map { |file| ProjectFile.new project, file }
+  end
+  
   it "should be created with a relative path" do
     relative_path = "a/path"
-    project = Project.new(relative_path)
+    project = Project.new relative_path
     project.path.should == File.expand_path(relative_path)
   end
   
   it "should be created with an absolute path" do
     absolute_path = "/an/absolute/path"
-    project = Project.new(absolute_path)
+    project = Project.new absolute_path
     project.path.should == absolute_path
   end
   
@@ -43,8 +48,13 @@ describe Project do
   end
   
   it "should list nothing if there are no files of that type" do
-    project = Project.new(@project_path)
+    project = Project.new @project_path
     project.list(:rb).should == []
+  end
+  
+  it "should list nothing if there are no files matching the pattern" do
+    project = Project.new @project_path
+    project.list(/Holy Example Batman/).should == []
   end
   
   it "should list nothing on a non-existing project" do
@@ -52,11 +62,40 @@ describe Project do
     project.list(:rb).should == []
   end
   
-  it "should allow to list all java files on project with many" do
-    project = Project.new(@project_path)
-    project.list(:java).sort.should == ["src/my/project/Main.java", "src/my/project/logic/Logic.java", "test/my/project/logic/LogicTest.java", "Util.java"].sort
+  it "should list all files from an extension on aproject with many" do
+    project = Project.new @project_path
+    expected = to_project_file project, ["src/my/project/Main.java", "src/my/project/logic/Logic.java", "test/my/project/logic/LogicTest.java", "Util.java"]
+    project.list(:java).sort.should == expected.sort
   end
-
+  
+  it "should list a single file with an extension on a project" do
+    project = Project.new @project_path
+    expected = to_project_file project, ["bin/my/project/logic/Logic.class"]
+    project.list(:class).sort.should == expected.sort
+  end
+  
+  it "should list files matching a pattern a project with many" do
+    project = Project.new @project_path
+    expected = to_project_file project, ["src/my/project/Main.java", "src/my/project/logic/Logic.java"]
+    project.list(/src\/.*.java/).sort.should == expected.sort
+  end
+  
+  it "should list a single file matching a pattern a project" do
+    project = Project.new @project_path
+    expected = to_project_file project, ["Util.java"]
+    project.list(/^((?!\/).)*\..*/).sort.should == expected.sort
+  end
+  
+  it "should compare based on path" do
+    project = Project.new @project_path
+    other_project = Project.new "/an/absolute/path"
+    equal_project = Project.new @project_path
+    
+    (project<=>project).should == 0
+    (project<=>other_project).should == 1
+    (other_project<=>project).should == -1
+    (project<=>equal_project).should == 0
+  end
   
   after(:all) do
     File.delete "#{@project_path}/../Useless.java"

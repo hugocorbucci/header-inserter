@@ -34,13 +34,13 @@ header_format = """
 """
 
 project = Project.new "/my/project"
-files = project.list ".rb"
+files = project.list :rb
 hooks = { "REPLACE_YEAR_DATE" => { |file|
 									created_year = file.retrieve_created_on.year;
 									if created_year = Date.today.year
 									 	""
 									else
-										created_year.to_s + ", "
+										created_year.to_s + ","
 									end
 								 },
  		  "REPLACE_CURRENT_YEAR" => { |file| Date.today.year },

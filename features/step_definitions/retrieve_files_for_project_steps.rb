@@ -1,4 +1,5 @@
 require 'lib/header-inserter/project'
+require 'lib/header-inserter/project-file'
 require 'ftools'
 
 non_existing = "/tmp/non_existing_project" + rand(1000000).to_s
@@ -50,7 +51,7 @@ Then /I should get nothing/ do
 end
 
 Then /I should get (\[".*"(?:, ".*")?\])/ do |list|
-  @files.sort.should == eval(list).sort
+  @files.sort.should == eval(list).map{|path| ProjectFile.new @project, path }.sort
 end
 
 at_exit do

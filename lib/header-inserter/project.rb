@@ -1,10 +1,16 @@
 require 'find'
+require 'lib/header-inserter/project-file'
 
 class Project
+  include Comparable
   attr_reader :path
   
   def initialize path
     @path = File.expand_path(path)
+  end
+  
+  def <=> other
+    @path <=> other.path
   end
   
   def list file_pattern
@@ -13,10 +19,11 @@ class Project
     end
     files = []
     Find.find @path do |entry|
-      if file_pattern.match entry
-        files << entry
+      short_entry = entry.sub /^#{@path+File::SEPARATOR}/, ""
+      if file_pattern.match short_entry
+        files << ProjectFile.new(self, short_entry)
       end
     end
-    files.map{|entry| entry.sub /^#{@path+File::SEPARATOR}/, ""}
+    files
   end
 end
