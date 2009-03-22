@@ -1,0 +1,54 @@
+= header-inserter
+
+https://github.com/night/header-inserter/tree
+
+== DESCRIPTION:
+
+This project was created to help me insert the EPLv1.0 license into all Archimedes source code files.
+
+It should recover data from the subversion repository if needed and generated a header with the license, the years in which the copyright apply and the list of contributors for each file.
+
+== FEATURES/PROBLEMS:
+
+Feature:
+- Lists all files of a certain extension within a directory
+
+== SYNOPSIS:
+
+Create a new project:
+project = Project.new "/tmp/my/project/"
+List "rb" files in it:
+files = project.list "rb"
+
+== REQUIREMENTS:
+
+All you need is ruby 1.8 which you probably have since you are installing a gem.
+
+== INSTALL:
+
+sudo gem install header-inserter
+
+== LICENSE:
+
+(The MIT License)
+
+Copyright (c) 2009 Hugo Corbucci
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
