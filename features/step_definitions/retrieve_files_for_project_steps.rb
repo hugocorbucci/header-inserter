@@ -1,5 +1,5 @@
 require 'lib/header-inserter/project'
-require 'lib/header-inserter/project-file'
+require 'lib/header-inserter/project_file'
 require 'ftools'
 
 non_existing = "/tmp/non_existing_project" + rand(1000000).to_s

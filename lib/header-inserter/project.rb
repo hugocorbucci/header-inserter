@@ -1,5 +1,5 @@
 require 'find'
-require 'lib/header-inserter/project-file'
+require 'lib/header-inserter/project_file'
 
 class Project
   include Comparable

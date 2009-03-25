@@ -1,8 +1,7 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 require 'ftools'
 require 'fileutils'
-require 'lib/header-inserter/project'
-require 'lib/header-inserter/project-file'
+require 'lib/header-inserter/project_file'
 
 describe Project do
   
