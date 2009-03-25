@@ -96,6 +96,29 @@ describe Project do
     (project<=>equal_project).should == 0
   end
   
+  it "should return files with a SvnVersionControl if they are under svn version control" do
+    project = Project.new @project_path
+    File.makedirs "#{@project_path}/src/my/project/.svn"
+    File.makedirs "#{@project_path}/src/my/project/logic/.svn"
+    File.makedirs "#{@project_path}/test/my/project/logic/.svn"
+    create_file "#{@project_path}/src/my/project/.svn/entries", "1\n\ndir\n1\nhttp://svn.archimedes.org.br/public/header-inserter/example/src/my/project\nhttp://svn.archimedes.org.br/public/\n\n\n\n2009-03-25T10:45:36.384923Z\n1\nhugo\n\n\nsvn:special svn:externals svn:needs-lock\n\n\n\n\n\n\n\n\na03a93f-28bc-2938-fbd2-ba29480238aa\n\L\nMain.java\nfile\n1\n\n\n\n2009-03-25T10:45:37.000000Z\ndf2e89885a41b572e159e8e454613b74\n2009-03-25T10:45:37.000000Z\n1\nhugo354\L"
+    create_file "#{@project_path}/src/my/project/logic/.svn/entries", "1\n\ndir\n1\nhttp://svn.archimedes.org.br/public/header-inserter/example/src/my/project/logic\nhttp://svn.archimedes.org.br/public/\n\n\n\n2009-03-25T10:45:36.384923Z\n1\nhugo\n\n\nsvn:special svn:externals svn:needs-lock\n\n\n\n\n\n\n\n\na03a93f-28bc-2938-fbd2-ba29480238aa\n\L\nLogic.java\nfile\n1\n\n\n\n2009-03-25T10:45:37.000000Z\ndf2e89885a41b572e159e8e454613b74\n2009-03-25T10:45:37.000000Z\n1\nhugo354\L"
+    create_file "#{@project_path}/test/my/project/logic/.svn/entries", "1\n\ndir\n1\nhttp://svn.archimedes.org.br/public/header-inserter/example/test/my/project/logic\nhttp://svn.archimedes.org.br/public/\n\n\n\n2009-03-25T10:45:36.384923Z\n1\nhugo\n\n\nsvn:special svn:externals svn:needs-lock\n\n\n\n\n\n\n\n\na03a93f-28bc-2938-fbd2-ba29480238aa\n\L\nLogicTest.java\nfile\n1\n\n\n\n2009-03-25T10:45:37.000000Z\ndf2e89885a41b572e159e8e454613b74\n2009-03-25T10:45:37.000000Z\n1\nhugo354\L"
+    
+    project.list(:java).sort.each do |file|
+      if file.path == "Util.java"
+        file.version_control.should be_kind_of(NilVersionControl)
+      else
+        path = "http://svn.archimedes.org.br/public/header-inserter/example/"+File.dirname(file.path)
+        puts path
+
+        vc = file.version_control 
+        vc.should be_kind_of(SvnVersionControl)
+        vc.path.should == path
+      end
+    end
+  end
+  
   after(:all) do
     File.delete "#{@project_path}/../Useless.java"
     FileUtils.rm_rf @project_path

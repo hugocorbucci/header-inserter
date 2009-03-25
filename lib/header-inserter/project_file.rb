@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + '/project'
 require File.dirname(__FILE__) + '/nil_version_control'
+require File.dirname(__FILE__) + '/svn_version_control'
 require 'date'
 require 'etc'
 
