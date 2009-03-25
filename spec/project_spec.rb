@@ -16,6 +16,9 @@ describe Project do
     create_file "#{@project_path}/bin/my/project/logic/Logic.class", (1..500).to_a.map{|x| rand(256)}.pack("c*")
     create_file "#{@project_path}/Util.java", "class Util {}"
     create_file "#{@project_path}/../Useless.java", "package invalid; class Useless {}"
+    
+    File.makedirs "#{@project_path}/src/my/project/.svn/text-base/"
+    create_file "#{@project_path}/src/my/project/.svn/text-base/ShouldEndWith.java.svn-base", "package my.project; class ShouldEndWith {}"
   end
   
   def create_file path, content
@@ -63,6 +66,7 @@ describe Project do
   
   it "should list all files from an extension on aproject with many" do
     project = Project.new @project_path
+    
     expected = to_project_file project, ["src/my/project/Main.java", "src/my/project/logic/Logic.java", "test/my/project/logic/LogicTest.java", "Util.java"]
     project.list(:java).sort.should == expected.sort
   end
@@ -76,7 +80,7 @@ describe Project do
   it "should list files matching a pattern a project with many" do
     project = Project.new @project_path
     expected = to_project_file project, ["src/my/project/Main.java", "src/my/project/logic/Logic.java"]
-    project.list(/src\/.*.java/).sort.should == expected.sort
+    project.list(/src\/.*.java$/).sort.should == expected.sort
   end
   
   it "should list a single file matching a pattern a project" do
@@ -109,12 +113,9 @@ describe Project do
       if file.path == "Util.java"
         file.version_control.should be_kind_of(NilVersionControl)
       else
-        path = "http://svn.archimedes.org.br/public/header-inserter/example/"+File.dirname(file.path)
-        puts path
-
         vc = file.version_control 
         vc.should be_kind_of(SvnVersionControl)
-        vc.path.should == path
+        vc.path.should == "http://svn.archimedes.org.br/public/header-inserter/example/"
       end
     end
   end

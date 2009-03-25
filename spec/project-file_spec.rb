@@ -80,13 +80,13 @@ describe ProjectFile do
   
   it "should retrieve created on information from modifications from version control" do
     mock_version_control = mock(NilVersionControl.new)
-    mock_version_control.should_receive(:history).with("#{@project.path}/A.java").once.and_return([])
+    mock_version_control.should_receive(:history).with("A.java").once.and_return([])
     file = ProjectFile.new @project, "A.java", mock_version_control
     file.created_on.should == Date.today
     
     date = DateTime.parse("2009-01-01T17:32:45-03:00")
     mock_version_control = mock(NilVersionControl.new)
-    mock_version_control.should_receive(:history).with("#{@project.path}/A.java").once.and_return([Modification.new(134, "hugo", date, "Unique entry")])
+    mock_version_control.should_receive(:history).with("A.java").once.and_return([Modification.new(134, "hugo", date, "Unique entry")])
     file = ProjectFile.new @project, "A.java", mock_version_control
     file.created_on.should == date
     
@@ -97,20 +97,20 @@ describe ProjectFile do
     mods = [Modification.new(134, "hugo", date1, "First entry"),
             Modification.new(531, "mari", date2, "Second entry"),
             Modification.new(1039, "hugo", date3, "Third and last entry")]
-    mock_version_control.should_receive(:history).with("#{@project.path}/A.java").once.and_return(mods)
+    mock_version_control.should_receive(:history).with("A.java").once.and_return(mods)
     file = ProjectFile.new @project, "A.java", mock_version_control
     file.created_on.should == date1
   end
   
   it "should retrieve contributors from modifications from version control with unique names sorted by first occurrence" do
     mock_version_control = mock(NilVersionControl.new)
-    mock_version_control.should_receive(:history).with("#{@project.path}/A.java").once.and_return([])
+    mock_version_control.should_receive(:history).with("A.java").once.and_return([])
     file = ProjectFile.new @project, "A.java", mock_version_control
     file.contributors.should == ["night"]
     
     date = DateTime.parse("2009-01-01T17:32:45-03:00")
     mock_version_control = mock(NilVersionControl.new)
-    mock_version_control.should_receive(:history).with("#{@project.path}/A.java").once.and_return([Modification.new(134, "hugo", date, "Unique entry")])
+    mock_version_control.should_receive(:history).with("A.java").once.and_return([Modification.new(134, "hugo", date, "Unique entry")])
     file = ProjectFile.new @project, "A.java", mock_version_control
     file.contributors.should == ["hugo"]
     
@@ -125,7 +125,7 @@ describe ProjectFile do
             Modification.new(1039, "hugo", date3, "Third entry"),
             Modification.new(1045, "kung", date4, "Fourth entry"),
             Modification.new(1253, "mari", date5, "Last entry")]
-    mock_version_control.should_receive(:history).with("#{@project.path}/A.java").once.and_return(mods)
+    mock_version_control.should_receive(:history).with("A.java").once.and_return(mods)
     file = ProjectFile.new @project, "A.java", mock_version_control
     file.contributors.should == ["hugo", "mari", "kung"]
   end
@@ -151,7 +151,7 @@ describe ProjectFile do
     
     date = DateTime.parse "2009-03-24T21:43:58-03:00"
     mock_version_control = mock(NilVersionControl.new)
-    mock_version_control.should_receive(:history).with("#{@project.path}/A.java").once.and_return([Modification.new(324, "hugo", date, "Unique entry")])
+    mock_version_control.should_receive(:history).with("A.java").once.and_return([Modification.new(324, "hugo", date, "Unique entry")])
     file = ProjectFile.new @project, "A.java", mock_version_control
     file.generate_header(header, hooks).should == expected_header
   end

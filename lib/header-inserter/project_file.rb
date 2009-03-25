@@ -45,14 +45,18 @@ class ProjectFile
   end
   
   def contributors
-    return [username] if modifications.empty?
-    modifications.map{ |mod| mod.author }.uniq
+    return [username.strip] if modifications.empty?
+    modifications.map{ |mod| mod.author.strip }.uniq
   end
   
   def generate_header header, hooks
     generated_header = header
     hooks.keys.each do |key|
-      generated_header = generated_header.gsub key.to_s, hooks[key].call(self)
+      value = hooks[key].call(self)
+      if not value.is_a?(String)
+        puts "Error while evaluating the hook for #{key}. Returned a #{value.class} valued as '#{value}'. Calling to_s."
+      end
+      generated_header = generated_header.gsub key.to_s, value.to_s
     end
     generated_header
   end
@@ -75,7 +79,7 @@ class ProjectFile
   protected
 
   def modifications
-    @mods = version_control.history absolute_path if @mods.nil?
+    @mods = version_control.history path if @mods.nil?
     @mods
   end
   

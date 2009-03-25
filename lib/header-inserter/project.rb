@@ -17,7 +17,7 @@ class Project
   
   def list file_pattern
     if file_pattern.is_a? Symbol
-      file_pattern = /.*\.#{file_pattern.to_s}/
+      file_pattern = /.*\.#{file_pattern.to_s}$/
     end
     files = []
     Find.find @path do |entry|
@@ -38,7 +38,7 @@ class Project
     entries = File.new entries_path, "r"
     contents = []
     entries.each{|line| contents << line}
-    svn_path = contents[4].strip
+    svn_path = contents[4].strip.gsub(/#{File.dirname(path)}/, "")
     entry_for_file = contents.collect{|line| /^#{file_name}$/.match line }
     return SvnVersionControl.new(svn_path) unless entry_for_file.empty?
   rescue Errno::ENOENT

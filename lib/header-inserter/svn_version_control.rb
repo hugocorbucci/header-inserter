@@ -1,3 +1,5 @@
+require File.dirname(__FILE__) + '/modification'
+
 class SvnVersionControl
   attr_reader :path
   @@entry_start = /^[-]{72}$/
