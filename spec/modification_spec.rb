@@ -1,4 +1,4 @@
-require 'lib/header-inserter/modification'
+require File.dirname(__FILE__) + '/../lib/header-inserter/modification'
 require 'date'
 
 describe Modification do

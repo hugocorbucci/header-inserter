@@ -1,5 +1,5 @@
-require 'lib/header-inserter/svn_version_control'
-require 'lib/header-inserter/modification'
+require File.dirname(__FILE__) + '/../lib/header-inserter/svn_version_control'
+require File.dirname(__FILE__) + '/../lib/header-inserter/modification'
 require 'date'
 
 describe SvnVersionControl do

@@ -1,6 +1,6 @@
-require 'lib/header-inserter/project'
-require 'lib/header-inserter/project_file'
-require 'lib/header-inserter/modification'
+require File.dirname(__FILE__) + '/../../lib/header-inserter/project'
+require File.dirname(__FILE__) + '/../../lib/header-inserter/project_file'
+require File.dirname(__FILE__) + '/../../lib/header-inserter/modification'
 require 'ftools'
 
 project = Project.new("/tmp/version_controlled_project")

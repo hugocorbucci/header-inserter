@@ -1,5 +1,5 @@
-require 'lib/header-inserter/project'
-require 'lib/header-inserter/nil_version_control'
+require File.dirname(__FILE__) + '/project'
+require File.dirname(__FILE__) + '/nil_version_control'
 require 'date'
 require 'etc'
 
@@ -74,7 +74,7 @@ class ProjectFile
   protected
 
   def modifications
-    @mods = version_control.history if @mods.nil?
+    @mods = version_control.history absolute_path if @mods.nil?
     @mods
   end
   

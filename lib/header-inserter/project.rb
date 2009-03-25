@@ -1,5 +1,5 @@
 require 'find'
-require 'lib/header-inserter/project_file'
+require File.dirname(__FILE__) + '/project_file'
 
 class Project
   include Comparable
