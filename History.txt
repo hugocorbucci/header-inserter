@@ -1,4 +1,14 @@
+== 1.0.1 2009-03-25
+
+* New version
+  * Correcting path bugs and tweaking for release
+
+== 0.4.1 2009-03-21
+
+* 1 major enhancement:
+  * Adding support to modifications and svn
+
 == 0.0.1 2009-03-21
 
 * 1 major enhancement:
-  * Initial release
+  * Initial commit to github
