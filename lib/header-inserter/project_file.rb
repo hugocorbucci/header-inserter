@@ -62,14 +62,15 @@ class ProjectFile
   end
   
   def add_header header, old_header = nil
-    content = header
+    content = ""
     file = File.new absolute_path, "r"
     file.each do |line|
       content += line
     end
     file.close
     
-    content.gsub(old_header, "") unless old_header.nil?
+    content.gsub!(old_header, "") unless old_header.nil?
+    content = header + content
     
     file = File.new absolute_path, "w"
     file.puts content

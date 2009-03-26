@@ -1,3 +1,8 @@
+== 1.0.1 2009-03-26
+
+* New version
+  * addHeader wasn't replacing the old header. Changed the behavior to do so. Also does not erase parts of the new header if they match the old header.
+
 == 1.0.1 2009-03-25
 
 * New version

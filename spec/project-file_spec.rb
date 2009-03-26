@@ -170,10 +170,22 @@ describe ProjectFile do
   it "should add a header at the beginning of the file and remove the one specified" do
     new_header = "/**\n * My fine header.\n * It has the date (2009-03-24, 21:43:58) and the first contributor (hugo).\n * And ends like nothing\n */\n\n"
     stupid_header = "/** A stupid header */\n\n"
-    content = "#{stupid_header}class A {}\n"
+    content = "class A {}\n"
     
     file = ProjectFile.new @project, "A.java"
-    create_file file.absolute_path, content
+    create_file file.absolute_path, stupid_header + content
+    file.add_header(new_header, stupid_header)
+    
+    read_content(file.absolute_path).should == new_header + content
+  end
+  
+  it "should add a header at the beginning of the file and remove the one specified even if a part matches" do
+    new_header = "/**\n * My fine header.\n * It has the date (2009-03-24, 21:43:58) and the first contributor (hugo).\n * And ends like nothing\n */\n/** A stupid header */\n\n"
+    stupid_header = "/** A stupid header */\n\n"
+    content = "class A {}\n"
+    
+    file = ProjectFile.new @project, "A.java"
+    create_file file.absolute_path, stupid_header + content
     file.add_header(new_header, stupid_header)
     
     read_content(file.absolute_path).should == new_header + content
@@ -184,7 +196,6 @@ describe ProjectFile do
   end
   
   protected
-  
   
   def create_file absolute_path, content
     File.makedirs File.dirname(absolute_path)
