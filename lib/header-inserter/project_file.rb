@@ -69,15 +69,29 @@ class ProjectFile
     end
     file.close
     
-    content.gsub!(old_header, "") unless old_header.nil?
-    content = header + content
+    content = remove old_header, content
     
     file = File.new absolute_path, "w"
-    file.puts content
+    file.puts(header + content)
     file.close
   end
   
   protected
+  
+  def remove old_header, content
+    replaced = false
+    unless old_header.nil?
+      content.gsub!(old_header) { |match|
+        if not replaced
+          replaced = true
+          ""
+        else
+          match
+        end
+      }
+    end
+    content
+  end
 
   def modifications
     @mods = version_control.history path if @mods.nil?

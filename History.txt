@@ -1,4 +1,9 @@
-== 1.0.1 2009-03-26
+== 1.0.3 2009-03-27
+
+* New version
+  * The replace of the old header should happen only once. If there are more comments around the code with a similar content, it is safer to let them there.
+
+== 1.0.2 2009-03-26
 
 * New version
   * addHeader wasn't replacing the old header. Changed the behavior to do so. Also does not erase parts of the new header if they match the old header.
